@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import Header from "./components/layout/Header";
 import ProductCard from "./components/common/ProductCard";
+import ProductDetail from "./components/common/ProductDetail";
 
 function App() {
   const product = {
@@ -23,6 +24,8 @@ function App() {
         thumbnail={product.thumbnail}
         images={product.images}
       />
+
+      <ProductDetail />
     </>
   );
 }

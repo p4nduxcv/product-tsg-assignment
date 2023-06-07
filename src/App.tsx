@@ -1,14 +1,28 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
+import Header from "./components/layout/Header";
+import ProductCard from "./components/common/ProductCard";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const product = {
+    title: "Product Name",
+    thumbnail: "https://i.dummyjson.com/data/products/7/thumbnail.jpg",
+    images: [
+      "https://i.dummyjson.com/data/products/7/1.jpg",
+      "https://i.dummyjson.com/data/products/7/2.jpg",
+      "https://i.dummyjson.com/data/products/7/thumbnail.jpg",
+    ],
+  };
 
   return (
     <>
-      <h5>TSG Assignment</h5>
+      <Header />
+
+      <ProductCard
+        title={product.title}
+        thumbnail={product.thumbnail}
+        images={product.images}
+      />
     </>
   );
 }

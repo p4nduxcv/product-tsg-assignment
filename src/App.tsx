@@ -1,10 +1,14 @@
-import { useState } from "react";
 import "./App.css";
 import Header from "./components/layout/Header";
 import ProductCard from "./components/common/ProductCard";
 import ProductDetail from "./components/common/ProductDetail";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getAllProducts } from "./store/reducer/allProductSlice";
+import ProductList from "./components/product/ProductList";
 
 function App() {
+  const dispatch = useDispatch();
   const product = {
     title: "Product Name",
     thumbnail: "https://i.dummyjson.com/data/products/7/thumbnail.jpg",
@@ -15,17 +19,15 @@ function App() {
     ],
   };
 
+  useEffect(() => {
+    dispatch<any>(getAllProducts());
+  }, []);
+
   return (
     <>
       <Header />
-
-      <ProductCard
-        title={product.title}
-        thumbnail={product.thumbnail}
-        images={product.images}
-      />
-
-      <ProductDetail />
+      <ProductList />
+      {/* <ProductDetail /> */}
     </>
   );
 }

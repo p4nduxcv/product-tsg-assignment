@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 import {
   Card,
   CardContent,
@@ -11,36 +12,47 @@ import {
 import StarIcon from "@mui/icons-material/Star";
 import { IProductCard } from "./types/IProductCard";
 
-function ProductCard(props: IProductCard) {
+interface Props {
+  cardData: IProductCard;
+}
+
+function ProductCard({
+  cardData: { title, thumbnail, description, rating, price },
+}: Props) {
   return (
-    <>
-      <Card sx={{ maxWidth: 345 }}>
+    <div className="p-3">
+      <Card sx={{ width: 400, height: 400 }}>
         <CardMedia
           sx={{ height: 200 }}
-          image="https://i.dummyjson.com/data/products/7/thumbnail.jpg"
+          image={thumbnail}
           title="green iguana"
         />
         <CardContent>
           <div className="flex justify-between">
             {" "}
             <Typography gutterBottom variant="h5" component="div">
-              Samsung Universe 9
+              {title}
             </Typography>
-            <Chip label="RS 1400" color="error" />
+            <Chip label={`${"$"} ${price}`} color="error" />
           </div>
 
           <Typography gutterBottom variant="body2" color="text.secondary">
-            An apple mobile which is nothing like apple
+            {description}
           </Typography>
 
-          <Chip icon={<StarIcon />} label="8" size="small" color="warning" />
+          <Chip
+            icon={<StarIcon />}
+            label={rating}
+            size="small"
+            color="warning"
+          />
         </CardContent>
 
         <CardActions>
           <Button size="small">Learn More</Button>
         </CardActions>
       </Card>
-    </>
+    </div>
   );
 }
 

@@ -1,7 +1,9 @@
-import type { PayloadAction } from '@reduxjs/toolkit'
+import type { Dispatch, PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 
 import { IProduct } from '../../interfaces/IProduct';
+import { DispatchType } from '../store';
+
 
 export interface IProductState {
     products: IProduct[],
@@ -35,6 +37,19 @@ export const allProductSlice = createSlice({
         },
     },
 })
+
+export const getAllProducts = () => {
+    return async (dispatch: DispatchType) => {
+        dispatch(allProductSlice.actions.getAllProductRequestAction());
+        try {
+            const response = await fetch(`https://dummyjson.com/products`);
+            const data = await response.json();
+            dispatch(allProductSlice.actions.getAllProductSuccessAction(data))
+        } catch (error: any) {
+            dispatch(allProductSlice.actions.getAllProductFailedAction(error))
+        }
+    }
+}
 
 export const {
     getAllProductRequestAction,

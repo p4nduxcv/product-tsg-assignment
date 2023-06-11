@@ -22,21 +22,20 @@ function ProductDetail() {
     dispatch<any>(getProductDetail(Number(id)));
   }, [selectedProduct, id]);
 
-  // if (!Array.isArray(selectedProduct) || !selectedProduct.length) {
-  //   return <div>Loading...</div>;
-  // }
-  console.log(selectedProduct);
+  if (!selectedProduct) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="flex items-center">
-      <Carousel showArrows={true} autoPlay={true} className="w-1/2">
+    <div className="flex p-4 justify-center">
+      <Carousel className="w-1/2 h-auto" showArrows={true} autoPlay={true}>
         {selectedProduct.images.map((item: string, index: number) => (
           <div key={index}>
             <img src={item} alt={item} className="w-full h-auto" />
           </div>
         ))}
       </Carousel>
-      <Card className="max-w-xl ml-4 bg-white rounded-lg shadow-md p-8">
+      <Card className="max-w-xl ml-4 bg-white rounded-lg shadow-md p-8 w-1/2 h-auto">
         <CardContent>
           <Typography variant="h5" component="div" className="font-bold mb-4">
             {selectedProduct.brand}

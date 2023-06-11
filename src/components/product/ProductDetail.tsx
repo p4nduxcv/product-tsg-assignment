@@ -3,16 +3,20 @@ import { Button, Card, CardContent, Typography } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import StarIcon from "@mui/icons-material/Star";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { getProductDetail } from "../../store/reducer/allProductSlice";
+import LinearProgress from "@mui/material/LinearProgress";
+import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 
 function ProductDetail() {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const selectedProduct = useSelector(
-    (state: any) => state.allProduct.selectedProduct
+  const { selectedProduct, isSuccessful } = useSelector(
+    (state: any) => state.allProduct
   );
 
   useEffect(() => {
@@ -22,8 +26,22 @@ function ProductDetail() {
     dispatch<any>(getProductDetail(Number(id)));
   }, [selectedProduct, id]);
 
+  if (!isSuccessful && selectedProduct) {
+    return (
+      <Stack sx={{ width: "100%" }} spacing={2}>
+        <Alert severity="error">
+          Somthing went wrong when calling to the end point — check it out!
+        </Alert>
+      </Stack>
+    );
+  }
+
   if (!selectedProduct) {
-    return <div>Loading...</div>;
+    return (
+      <Box className="pt-1" sx={{ width: "100%" }}>
+        <LinearProgress />
+      </Box>
+    );
   }
 
   return (

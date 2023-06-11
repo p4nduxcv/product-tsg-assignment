@@ -11,14 +11,20 @@ import {
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import { IProductCard } from "./types/IProductCard";
+import { useNavigate } from "react-router";
 
 interface Props {
   cardData: IProductCard;
 }
 
 function ProductCard({
-  cardData: { title, thumbnail, description, rating, price },
+  cardData: { id, title, thumbnail, description, rating, price },
 }: Props) {
+  const navigate = useNavigate();
+  const productDetailedViewHandler = (id: number) => {
+    navigate(`/products/${id}`);
+  };
+
   return (
     <div className="p-3">
       <Card sx={{ width: 400, height: 400 }}>
@@ -49,7 +55,9 @@ function ProductCard({
         </CardContent>
 
         <CardActions>
-          <Button size="small">Learn More</Button>
+          <Button size="small" onClick={() => productDetailedViewHandler(id)}>
+            Learn More
+          </Button>
         </CardActions>
       </Card>
     </div>

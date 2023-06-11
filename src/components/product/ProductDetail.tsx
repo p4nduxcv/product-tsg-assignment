@@ -1,78 +1,77 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import StarIcon from "@mui/icons-material/Star";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
+import { getProductDetail } from "../../store/reducer/allProductSlice";
 
 function ProductDetail() {
-  const product = {
-    id: 1,
-    title: "iPhone 9",
-    description: "An apple mobile which is nothing like apple",
-    price: 549,
-    discountPercentage: 12.96,
-    rating: 4.69,
-    stock: 94,
-    brand: "Apple",
-    category: "smartphones",
-  };
+  const { id } = useParams();
+  const dispatch = useDispatch();
 
-  const carouselItems = [
-    {
-      image: "https://i.dummyjson.com/data/products/1/1.jpg",
-      legend: "Legend 1",
-    },
-    {
-      image: "https://i.dummyjson.com/data/products/1/4.jpg",
-      legend: "Legend 2",
-    },
-  ];
+  const selectedProduct = useSelector(
+    (state: any) => state.allProduct.selectedProduct
+  );
+
+  useEffect(() => {
+    if (selectedProduct && selectedProduct?.id === Number(id)) {
+      return;
+    }
+    dispatch<any>(getProductDetail(Number(id)));
+  }, [selectedProduct, id]);
+
+  // if (!Array.isArray(selectedProduct) || !selectedProduct.length) {
+  //   return <div>Loading...</div>;
+  // }
+  console.log(selectedProduct);
+
   return (
-    <div className="flex items-start">
+    <div className="flex items-center">
       <Carousel showArrows={true} autoPlay={true} className="w-1/2">
-        {carouselItems.map((item, index) => (
+        {selectedProduct.images.map((item: string, index: number) => (
           <div key={index}>
-            <img src={item.image} alt={item.legend} className="w-full h-auto" />
-            <p className="legend text-center">{item.legend}</p>
+            <img src={item} alt={item} className="w-full h-auto" />
           </div>
         ))}
       </Carousel>
       <Card className="max-w-xl ml-4 bg-white rounded-lg shadow-md p-8">
         <CardContent>
           <Typography variant="h5" component="div" className="font-bold mb-4">
-            {product.title}
+            {selectedProduct.brand}
           </Typography>
           <Typography variant="body1" color="text.secondary" className="mb-4">
-            {product.description}
+            {selectedProduct.description}
           </Typography>
           <div className="flex justify-between items-center mb-4">
             <Typography variant="h6" color="primary" className="font-semibold">
-              Price: ${product.price.toFixed(2)}
+              Price: ${selectedProduct.price.toFixed(2)}
             </Typography>
             <Typography
               variant="body2"
               className="text-green-500 font-semibold"
             >
-              {product.discountPercentage}% Off
+              {selectedProduct.discountPercentage}% Off
             </Typography>
           </div>
           <div className="flex items-center mb-4">
             <StarIcon className="mr-2 text-yellow-500" />
             <Typography variant="body2" className="text-gray-500">
-              {product.rating}
+              {selectedProduct.rating}
             </Typography>
           </div>
           <div className="flex justify-between items-center mb-4">
             <Typography variant="body2" className="text-gray-500">
-              Stock: {product.stock}
+              Stock: {selectedProduct.stock}
             </Typography>
             <Typography variant="body2" className="text-gray-500">
-              Brand: {product.brand}
+              Brand: {selectedProduct.brand}
             </Typography>
           </div>
           <div className="flex justify-between items-center mb-4">
             <Typography variant="body2" className="text-gray-500">
-              Category: {product.category}
+              Category: {selectedProduct.category}
             </Typography>
           </div>
         </CardContent>

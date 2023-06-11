@@ -7,6 +7,7 @@ import { DispatchType } from '../store';
 
 export interface IProductState {
     products: IProduct[],
+    selectedProduct?: IProduct
     isLoading: boolean,
     isSuccessful: boolean,
     error: any
@@ -35,6 +36,18 @@ export const allProductSlice = createSlice({
             state.isSuccessful = false
             state.result = action.payload
         },
+        getProductRequestAction: (state: any) => {
+            state.isLoading = true;
+        },
+        getProductSuccessAction: (state: any, action: PayloadAction<[]>) => {
+            state.selectedProduct = action.payload
+            state.isLoading = false;
+            state.isSuccessful = true
+        },
+        getProductFailedAction: (state: any, action: PayloadAction<{}>) => {
+            state.isSuccessful = false
+            state.result = action.payload
+        },
     },
 })
 
@@ -44,9 +57,23 @@ export const getAllProducts = () => {
         try {
             const response = await fetch(`https://dummyjson.com/products`);
             const data = await response.json();
-            dispatch(allProductSlice.actions.getAllProductSuccessAction(data))
+            const products = data?.products ?? []
+            dispatch(allProductSlice.actions.getAllProductSuccessAction(products))
         } catch (error: any) {
             dispatch(allProductSlice.actions.getAllProductFailedAction(error))
+        }
+    }
+}
+
+export const getProductDetail = (id: number) => {
+    return async (dispatch: DispatchType) => {
+        dispatch(allProductSlice.actions.getProductRequestAction());
+        try {
+            const response = await fetch(`https://dummyjson.com/products/${id}`);
+            const data = await response.json();
+            dispatch(allProductSlice.actions.getProductSuccessAction(data))
+        } catch (error: any) {
+            dispatch(allProductSlice.actions.getProductFailedAction(error))
         }
     }
 }

@@ -4,8 +4,8 @@ import ProductCard from "../common/ProductCard";
 import { IProductCard } from "../common/types/IProductCard";
 
 function ProductList() {
-  const allProductState = useSelector((state: any) => state.allProduct);
-  const products: Array<IProductCard> = allProductState.products.products;
+  const products = useSelector((state: any) => state.allProduct.products);
+  // const products: Array<IProductCard> = allProductState.products.products;
 
   // useEffect(() => {
   //   console.log(allProductState.products.products);
@@ -18,8 +18,8 @@ function ProductList() {
   return (
     <>
       <div className="flex flex-wrap justify-center gap-3">
-        {products.map((product) => {
-          return <ProductCard cardData={product} />;
+        {products.map((product, index) => {
+          return <ProductCard key={index} cardData={product} />;
         })}
       </div>
     </>

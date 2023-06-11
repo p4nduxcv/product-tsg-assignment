@@ -1,17 +1,14 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import ProductCard from "../common/ProductCard";
-import { IProductCard } from "../common/types/IProductCard";
+import { IProductState } from "../../store/reducer/allProductSlice";
 
 function ProductList() {
-  const products = useSelector((state: any) => state.allProduct.products);
-  // const products: Array<IProductCard> = allProductState.products.products;
+  const { products, isLoading }: IProductState = useSelector(
+    (state: any) => state.allProduct
+  );
 
-  // useEffect(() => {
-  //   console.log(allProductState.products.products);
-  // }, []);
-
-  if (!Array.isArray(products) || !products.length) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 

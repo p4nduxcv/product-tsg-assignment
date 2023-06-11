@@ -36,6 +36,8 @@ export const allProductSlice = createSlice({
             state.isSuccessful = false
             state.result = action.payload
         },
+
+
         getProductRequestAction: (state: any) => {
             state.isLoading = true;
         },
@@ -48,14 +50,17 @@ export const allProductSlice = createSlice({
             state.isSuccessful = false
             state.result = action.payload
         },
+
+
+
     },
 })
 
-export const getAllProducts = () => {
+export const getAllProducts = (query?: string) => {
     return async (dispatch: DispatchType) => {
         dispatch(allProductSlice.actions.getAllProductRequestAction());
         try {
-            const response = await fetch(`https://dummyjson.com/products`);
+            const response = await fetch(query ? `https://dummyjson.com/products/search?q=${query}` : `https://dummyjson.com/products`);
             const data = await response.json();
             const products = data?.products ?? []
             dispatch(allProductSlice.actions.getAllProductSuccessAction(products))
@@ -77,6 +82,7 @@ export const getProductDetail = (id: number) => {
         }
     }
 }
+
 
 export const {
     getAllProductRequestAction,
